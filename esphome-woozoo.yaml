@@ -1,0 +1,132 @@
+substitutions:
+  name: esphome-woozoo
+  friendly_name: ESPHome Woozoo Fan
+
+esphome:
+  name: ${name}
+  friendly_name: ${friendly_name}
+  min_version: 2024.6.0
+  name_add_mac_suffix: false
+  project:
+    name: esphome.web
+    version: dev
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+  level: DEBUG
+# Enable Home Assistant API
+api:
+
+# Allow Over-The-Air updates
+ota:
+- platform: esphome
+
+# Allow provisioning Wi-Fi via serial
+improv_serial:
+
+wifi:
+  # Set up a wifi access point
+  ap: {}
+
+# In combination with the `ap` this allows the user
+# to provision wifi credentials to the device via WiFi AP.
+captive_portal:
+
+dashboard_import:
+  package_import_url: github://esphome/firmware/esphome-web/esp32c3.yaml@main
+  import_full_config: true
+
+# Sets up Bluetooth LE (Only on ESP32) to allow the user
+# to provision wifi credentials to the device.
+esp32_improv:
+  authorizer: none
+
+# To have a "next url" for improv serial
+web_server:
+
+# remote_receiver:
+#   pin:
+#     number: GPIO05
+#     inverted: True
+#   rmt_channel: 2
+#   dump: all
+
+
+remote_transmitter:
+  pin: GPIO5
+  carrier_duty_percent: 50%
+
+# https://esphome.io/components/remote_transmitter.html
+button:
+  - platform: template
+    name: "Woozoo Fan Toggle"
+    on_press:
+      remote_transmitter.transmit_nec:
+        address: 0xDE80
+        command: 0xFF00
+  - platform: template
+    name: "Woozoo Fan Timer 1 Hour"
+    on_press:
+      remote_transmitter.transmit_nec:
+        address: 0xDE80
+        command: 0xF708
+  - platform: template
+    name: "Woozoo Fan Timer 2 Hour"
+    on_press:
+      remote_transmitter.transmit_nec:
+        address: 0xDE80
+        command: 0xF30C
+  - platform: template
+    name: "Woozoo Fan Timer 4 Hour"
+    on_press:
+      remote_transmitter.transmit_nec:
+        address: 0xDE80
+        command: 0xEF10
+  - platform: template
+    name: "Woozoo Fan Breeze Mode"
+    on_press:
+      remote_transmitter.transmit_nec:
+        address: 0xDE80
+        command: 0xF609
+  - platform: template
+    name: "Woozoo Decrease Fan Speed"
+    on_press:
+      remote_transmitter.transmit_nec:
+        address: 0xDE80
+        command: 0xEB14
+  - platform: template
+    name: "Woozoo Increase Fan Speed"
+    on_press:
+      remote_transmitter.transmit_nec:
+        address: 0xDE80
+        command: 0xE916
+  
+  - platform: template
+    name: "Woozoo Fan Vertical Oscillation"
+    on_press:
+      remote_transmitter.transmit_nec:
+        address: 0xDE80
+        command: 0xF10E
+  - platform: template
+    name: "Woozoo Fan Horizontal Oscillation"
+    on_press:
+      remote_transmitter.transmit_nec:
+        address: 0xDE80
+        command: 0xF50A
+  - platform: template
+    name: "Woozoo Fan Led Toggle"
+    on_press:
+      remote_transmitter.transmit_nec:
+        address: 0xDE80
+        command: 0xF20D
+  - platform: template
+    name: "Woozoo Fan Led Toggle"
+    on_press:
+      remote_transmitter.transmit_nec:
+        address: 0xDE80
+        command: 0xEE11
